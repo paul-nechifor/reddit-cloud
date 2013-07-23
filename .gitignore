@@ -1,0 +1,8 @@
+fonts/*.otf
+fonts/*.OTF
+fonts/*.ttf
+fonts/*.TTF
+config.json
+respondedTo.json
+*.pyc
+*~
