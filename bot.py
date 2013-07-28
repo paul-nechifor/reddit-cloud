@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # coding: utf-8
 
-import json, time, re, random, traceback, htmlentitydefs, os
+import json, time, re, random, traceback, htmlentitydefs, os, sys, argparse
 import praw, numpy, pyimgur, wordcloud
 from HTMLParser import HTMLParser
 from sklearn.feature_extraction.text import CountVectorizer
@@ -53,9 +53,8 @@ class Client:
                 fonts.append('fonts/' + f)
         return fonts
 
-    def start(self):
+    def login(self):
         self.reddit.login(self.config['username'], self.config['password'])
-        self.loop()
 
     def loop(self):
         while True:
@@ -103,11 +102,12 @@ class Client:
         allText = ''
         for comment in flatComments:
             if isinstance(comment, praw.objects.Comment):
-                allText += cleanComment(comment)
+                allText += cleanComment(comment) + '\n'
         return allText
 
-    def makeCloud(self, text):
-        font = random.choice(self.fonts)
+    def makeCloud(self, text, font=None):
+        if font is None:
+            font = random.choice(self.fonts)
         words, counts = wordcloud.process_text(text, max_features=2000)
         elements = wordcloud.fit_words(words, counts, width=self.size,
                 height=self.size, font_path=font)
@@ -121,11 +121,71 @@ class Client:
 
         return ui.link
 
-def main():
-    config = json.loads(open('config.json').read())
+def postUserHist(client, redditorName, replyComment, font=None):
+    user = client.reddit.get_redditor(redditorName)
 
-    c = Client(config)
-    c.start()
+    nComments = 0
+    markdownChars = 0
+    allText = ''
+
+    for comment in user.get_comments(limit=None):
+        nComments += 1
+        markdownChars += len(comment.body)
+        allText += cleanComment(comment) + '\n'
+        if nComments % 100 == 0:
+            print 'Got comments: ', nComments
+    client.makeCloud(allText, font=font)
+    url = client.uploadImage()
+    print url
+    comment = '[Word cloud for %d comments of yours.](%s)' % (nComments, url)
+    comment += " That's %.2f KB of Markdown, by the way." % \
+            (markdownChars / 1000.0)
+    if markdownChars > 1000000:
+        comment += ' You should write a book.'
+    if nComments == 1000:
+        comment += ' (I cannot get more than 1000 comments of yours.)'
+    comment += '\n\n' + client.config['signature']
+
+    replyComment.reply(comment)
+
+def userHist(args, config):
+    client = Client(config)
+    client.login()
+    try:
+        replyComment = client.reddit.get_submission(args.replyTo).comments[0]
+    except:
+        traceback.print_exc()
+        print "Invalid reply URL or Reddit isn't working."
+        exit(1)
+
+    postUserHist(client, args.name, replyComment, font=args.font)
+
+def hot(args, config):
+    client = Client(config)
+    client.login()
+    client.loop()
+
+def main():
+    parser = argparse.ArgumentParser(prog=sys.argv[0])
+    subparsers = parser.add_subparsers(help='sub-command help')
+
+    parser_user_hist = subparsers.add_parser('user-hist',
+            help='generate a word cloud for a given user\'s history')
+    parser_user_hist.add_argument('name', type=str, help="the user's name")
+    parser_user_hist.add_argument('replyTo', type=str,
+            help='the full URL the comment to which to add the reply')
+    parser_user_hist.add_argument('--font', type=str,
+            help='the font to be used',
+            default='fonts/open_sans_light.ttf')
+    parser_user_hist.set_defaults(func=userHist)
+
+    parser_hot = subparsers.add_parser('hot',
+            help='generate word cloud for the most popular threads')
+    parser_hot.set_defaults(func=hot)
+
+    config = json.loads(open('config.json').read())
+    args = parser.parse_args()
+    args.func(args, config)
 
 if __name__ == '__main__':
     main()
