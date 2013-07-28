@@ -32,7 +32,7 @@ The next thing that's needed is my fork of
 at [word cloud](https://github.com/paul-nechifor/word_cloud). Install it as a
 package by running:
 
-    amuelle://github.com/paul-nechifor/word_cloud/archive/master.zip
+    wget https://github.com/paul-nechifor/word_cloud/archive/master.zip
     unzip master.zip
     cd word_cloud-master
     sudo python setup.py install

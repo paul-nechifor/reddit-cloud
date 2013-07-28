@@ -107,11 +107,12 @@ class Client:
         return allText
 
     def makeCloud(self, text):
+        font = random.choice(self.fonts)
         words, counts = wordcloud.process_text(text, max_features=2000)
         elements = wordcloud.fit_words(words, counts, width=self.size,
-                height=self.size)
+                height=self.size, font_path=font)
         wordcloud.draw(elements, self.outFile, width=self.size,
-                height=self.size, scale=self.scale)
+                height=self.size, scale=self.scale, font_path=font)
 
     def uploadImage(self):
         im = pyimgur.Imgur(self.config['clientId'])
