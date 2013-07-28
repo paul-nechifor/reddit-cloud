@@ -2,10 +2,9 @@
 # coding: utf-8
 
 import json, time, re, random, traceback, htmlentitydefs, os
-import praw, numpy, pyimgur
+import praw, numpy, pyimgur, wordcloud
 from HTMLParser import HTMLParser
 from sklearn.feature_extraction.text import CountVectorizer
-from word_cloud.wordcloud import make_wordcloud
 
 def escapeHtml(what):
     return HTMLParser.unescape.__func__(HTMLParser, what)
@@ -35,6 +34,7 @@ class Client:
         self.config = config
         self.replyPause = config['replyPause']
         self.size = config['size']
+        self.scale = config['scale']
         self.reddit = praw.Reddit(config['userAgent'])
         self.respFile = 'respondedTo.json'
         if os.path.exists(self.respFile):
@@ -92,7 +92,7 @@ class Client:
         text = self.getSubmissionText(submission.id)
         self.makeCloud(text)
         url = self.uploadImage()
-        comment = '[Word cloud for comments here.](%s)' % url
+        comment = '[Word cloud out of all the comments.](%s)' % url
         comment += '\n\n' + self.config['signature']
         submission.add_comment(comment)
         print url
@@ -107,16 +107,11 @@ class Client:
         return allText
 
     def makeCloud(self, text):
-        cv = CountVectorizer(min_df=1, charset_error="ignore",
-                             stop_words="english", max_features=200)
-        counts = cv.fit_transform([text]).toarray().ravel()
-        words = numpy.array(cv.get_feature_names())
-        # throw away some words, normalize
-        words = words[counts > 1]
-        counts = counts[counts > 1]
-        font = random.choice(self.fonts)
-        counts = make_wordcloud(words, counts, self.outFile,
-                width=self.size, height=self.size, font_path=font)
+        words, counts = wordcloud.process_text(text, max_features=2000)
+        elements = wordcloud.fit_words(words, counts, width=self.size,
+                height=self.size)
+        wordcloud.draw(elements, self.outFile, width=self.size,
+                height=self.size, scale=self.scale)
 
     def uploadImage(self):
         im = pyimgur.Imgur(self.config['clientId'])

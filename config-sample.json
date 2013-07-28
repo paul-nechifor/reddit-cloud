@@ -3,7 +3,8 @@
     "password": "<password here>",
     "userAgent": "A word cloud generator run by /u/<your real username here>",
     "replyPause": 300,
-    "size": 600,
+    "size": 400,
+    "scale": 2,
     "clientId": "<your imgur client id>",
     "signature": "<how you want to sign your messages, for example point to the bot master.>"
 }
