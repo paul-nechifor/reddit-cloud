@@ -2,45 +2,43 @@ reddit-cloud
 ============
 
 This is a Reddit bot which generates word clouds for comments in submissions.
-I'm running it on user
-[WordCloudBot2](http://www.reddit.com/user/WordCloudBot2).
+I'm running it on user [WordCloudBot2][1].
 
-Requirements
+Installation
 ------------
 
-You need PRAW for the Reddit API. Install it with:
+I am going to go on a limb and suggest that you should probably use [virtualenv][2],
+in order to use this script.
 
-    pip install praw
+Install the script's dependencies:
 
-You need `pyimgur` in order to upload the images automatically to Imgur. You can
-install it by:
+    pip install -r requirements.txt
 
-    pip install pyimgur
+Copy the sample configuration file:
 
-but this might not work (it didn't for me on Ubuntu). You can install it from
-GitHub by:
+    cp config-sample.json config.json
 
-    wget https://github.com/Damgaard/PyImgur/archive/master.zip
-    unzip master.zip
-    cd PyImgur-master
-    sudo python setup.py install
-    cd ..
-    sudo rm -r PyImgur-master master.zip
+### Usage
 
-The next thing that's needed is my fork of
-[Andreas Mueller](https://github.com/amueller)'s `word_cloud`. You can find it
-at [word cloud](https://github.com/paul-nechifor/word_cloud). Install it as a
-package by running:
+    python bot.py -h
 
-    wget https://github.com/paul-nechifor/word_cloud/archive/master.zip
-    unzip master.zip
-    cd word_cloud-master
-    sudo python setup.py install
-    cd ..
-    sudo rm -r word_cloud-master master.zip
+### Notes
 
-Running it
-----------
+If you are using Mac OS X, you might have to install a Fortran compiler in order
+to fulfill some of the dependencies.
 
-You need to place some OTF or TTF files in `fonts` before running it and create
-a `config.json` file (rename `config-sample.json` to `config.json` and edit it).
+You are going to need a valid client id in order to upload the generated word
+cloud image to imgur, which you can get by [registering][3] an imgur application.
+
+You can also place some OTF or TTF files in the `fonts` directory; and they will
+be used to generate the word cloud.
+
+Acknowledgements
+----------------
+
+* [Andreas Mueller][4]'s `wordcloud` library.
+
+[1]:  http://www.reddit.com/user/WordCloudBot2
+[2]:  http://docs.python-guide.org/en/latest/dev/virtualenvs.html
+[3]:  http://api.imgur.com/oauth2/addclient
+[4]:  http://github.com/amueller/word_cloud
