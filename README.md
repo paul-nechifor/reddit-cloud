@@ -17,23 +17,27 @@ Copy the sample configuration file:
 
     cp config-sample.json config.json
 
-### Notes
-
-You are going to need a valid client id in order to upload the generated word cloud
-to imgur, which you can get by [registering][3] an imgur application.
-
-You can also place some OTF or TTF files in the `fonts` directory; and they will
-be used to generate the word cloud.
-
 ### Usage
 
     python bot.py -h
 
+### Notes
+
+If you are using Mac OS X, you might have to install a Fortran compiler in order
+to fulfill some of the dependencies.
+
+You are going to need a valid client id in order to upload the generated word
+cloud image to imgur, which you can get by [registering][3] an imgur application.
+
+You can also place some OTF or TTF files in the `fonts` directory; and they will
+be used to generate the word cloud.
+
 Acknowledgements
 ----------------
 
-* [Andreas Mueller][2]'s `word_cloud` library.
+* [Andreas Mueller][4]'s `wordcloud` library.
 
 [1]:  http://www.reddit.com/user/WordCloudBot2
-[2]:  https://github.com/amueller
+[2]:  http://docs.python-guide.org/en/latest/dev/virtualenvs.html
 [3]:  http://api.imgur.com/oauth2/addclient
+[4]:  http://github.com/amueller/word_cloud
