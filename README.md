@@ -7,9 +7,10 @@ I'm running it on user [WordCloudBot2][1].
 Installation
 ------------
 
-Install all the dependencies by using the `requirements.txt` file. Please note
-that if you are using Mac OS X, you might have to install a Fortran compiler in
-order to fulfill some dependencies.
+I am going to go on a limb and suggest that you should probably use [virtualenv][2],
+in order to use this script.
+
+Install the script's dependencies:
 
     pip install -r requirements.txt
 
