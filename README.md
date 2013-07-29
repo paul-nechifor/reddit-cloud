@@ -2,45 +2,38 @@ reddit-cloud
 ============
 
 This is a Reddit bot which generates word clouds for comments in submissions.
-I'm running it on user
-[WordCloudBot2](http://www.reddit.com/user/WordCloudBot2).
+I'm running it on user [WordCloudBot2][1].
 
-Requirements
+Installation
 ------------
 
-You need PRAW for the Reddit API. Install it with:
+Install all the dependencies by using the `requirements.txt` file. Please note
+that if you are using Mac OS X, you might have to install a Fortran compiler in
+order to fulfill some dependencies.
 
-    pip install praw
+    pip install -r requirements.txt
 
-You need `pyimgur` in order to upload the images automatically to Imgur. You can
-install it by:
+Copy the sample configuration file:
 
-    pip install pyimgur
+    cp config-sample.json config.json
 
-but this might not work (it didn't for me on Ubuntu). You can install it from
-GitHub by:
+### Notes
 
-    wget https://github.com/Damgaard/PyImgur/archive/master.zip
-    unzip master.zip
-    cd PyImgur-master
-    sudo python setup.py install
-    cd ..
-    sudo rm -r PyImgur-master master.zip
+You are going to need a valid client id in order to upload the generated word cloud
+to imgur, which you can get by [registering][3] an imgur application.
 
-The next thing that's needed is my fork of
-[Andreas Mueller](https://github.com/amueller)'s `word_cloud`. You can find it
-at [word cloud](https://github.com/paul-nechifor/word_cloud). Install it as a
-package by running:
+You can also place some OTF or TTF files in the `fonts` directory; and they will
+be used to generate the word cloud.
 
-    wget https://github.com/paul-nechifor/word_cloud/archive/master.zip
-    unzip master.zip
-    cd word_cloud-master
-    sudo python setup.py install
-    cd ..
-    sudo rm -r word_cloud-master master.zip
+### Usage
 
-Running it
-----------
+    python bot.py -h
 
-You need to place some OTF or TTF files in `fonts` before running it and create
-a `config.json` file (rename `config-sample.json` to `config.json` and edit it).
+Acknowledgements
+----------------
+
+* [Andreas Mueller][2]'s `word_cloud` library.
+
+[1]:  http://www.reddit.com/user/WordCloudBot2
+[2]:  https://github.com/amueller
+[3]:  http://api.imgur.com/oauth2/addclient
