@@ -20,7 +20,7 @@ No. It would be impractical to revisit posts.
 It's supposed to be more artistic than readable.
 
 4. **This bot is bad. Does anybody like this?**  
-Yes. [Some people think it's nice.][3] Please don't ban the bot if you're a mod.
+Yes. [Some people think it's nice.][2] Please don't ban the bot if you're a mod.
 
 5. **How are the word clouds generated? Where is that code?**  
 That's not in the bot source. It uses [my fork][4] of Andreas Mueller's
@@ -31,7 +31,6 @@ way more intensive.
 
 6. **Do you take requests?**  
 I haven't written that do be done automatically, I probably should.
-
 
 ## Instructions
 
@@ -63,7 +62,7 @@ there when a word cloud is generated. Open Sans is included by default.
 
 ### Usage
 
-You normally run the bot by:
+You normally start the bot by running:
 
     python bot.py hot
 
