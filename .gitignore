@@ -2,3 +2,7 @@ config.json
 respondedTo.json
 *.pyc
 *~
+
+# Ignore all my fonts except for the one default font.
+/fonts/*
+!/fonts/open_sans_light.ttf

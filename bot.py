@@ -4,7 +4,6 @@
 import json, time, re, random, traceback, htmlentitydefs, os, sys, argparse
 import praw, numpy, pyimgur, wordcloud
 from HTMLParser import HTMLParser
-from sklearn.feature_extraction.text import CountVectorizer
 
 def escapeHtml(what):
     return HTMLParser.unescape.__func__(HTMLParser, what)
