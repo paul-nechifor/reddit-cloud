@@ -41,6 +41,7 @@ I am going to go on a limb and suggest that you should probably use
 
 Install the script's dependencies:
 
+    pip install cython # Need this first.
     pip install -r requirements.txt
 
 ### Configuration
