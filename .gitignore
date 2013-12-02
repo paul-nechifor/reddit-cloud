@@ -1,5 +1,6 @@
 config.json
 respondedTo.json
+images.txt
 *.pyc
 *~
 

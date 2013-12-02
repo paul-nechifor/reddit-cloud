@@ -2,11 +2,17 @@
 # coding: utf-8
 
 import json, time, re, random, traceback, htmlentitydefs, os, sys, argparse
+import urllib2
 import praw, numpy, pyimgur, wordcloud
 from HTMLParser import HTMLParser
 
 def escapeHtml(what):
     return HTMLParser.unescape.__func__(HTMLParser, what)
+    
+def appendToFile(name, text):
+    f = open(name, 'a+')
+    f.write(text)
+    f.close()
 
 def cleanComment(comment):
     html = escapeHtml(comment.body_html)
@@ -83,6 +89,7 @@ class Client:
 
     def generateCloudFor(self, submission):
         self.respondedTo.add(submission.id)
+        # TODO: Fix this. My file is getting too big.
         out = open(self.respFile, 'w')
         out.write(json.dumps(list(self.respondedTo)))
         out.close()
@@ -92,8 +99,9 @@ class Client:
         url = self.uploadImage()
         comment = '[Word cloud out of all the comments.](%s)' % url
         comment += '\n\n' + self.config['signature']
+        
         submission.add_comment(comment)
-        print url
+        print 'New cloud:', url
 
     def getSubmissionText(self, sid):
         sub = self.reddit.get_submission(submission_id=sid, comment_limit=None)
@@ -117,6 +125,10 @@ class Client:
         im = pyimgur.Imgur(self.config['clientId'])
         ui = im.upload_image(self.outFile)
         os.remove(self.outFile)
+        
+        # Write the URL of the image so it's not forgotten even if commenting
+        # fails.
+        appendToFile('images.txt', ui.link + '\n')
 
         return ui.link
 
@@ -135,7 +147,7 @@ def postUserHist(client, redditorName, replyComment, font=None):
             print 'Got comments: ', nComments
     client.makeCloud(allText, font=font)
     url = client.uploadImage()
-    print url
+    
     comment = '[Word cloud for %d comments of yours.](%s)' % (nComments, url)
     comment += " That's %.2f KB of Markdown, by the way." % \
             (markdownChars / 1000.0)
