@@ -2,7 +2,6 @@
 # coding: utf-8
 
 import json, time, re, random, traceback, htmlentitydefs, os, sys, argparse
-import urllib2
 import praw, numpy, pyimgur, wordcloud
 from HTMLParser import HTMLParser
 
@@ -40,6 +39,7 @@ class Client:
         self.replyPause = config['replyPause']
         self.size = config['size']
         self.scale = config['scale']
+        self.minComments = config['minComments']
         self.reddit = praw.Reddit(config['userAgent'])
         self.respFile = 'respondedTo.json'
         if os.path.exists(self.respFile):
@@ -64,8 +64,7 @@ class Client:
     def loop(self):
         while True:
             try:
-                submissions = self.getUnreplyedSubmissions()
-                for s in submissions:
+                for s in self.getGoodSubmissions():
                     try:
                         self.generateCloudFor(s)
                         time.sleep(self.replyPause)
@@ -77,15 +76,11 @@ class Client:
                 traceback.print_exc()
             time.sleep(self.replyPause)
 
-    def getUnreplyedSubmissions(self):
-        submissions = self.reddit.get_subreddit('all').get_hot(limit=100)
-        unreplyed = []
-
-        for s in submissions:
-            if s.id not in self.respondedTo:
-                unreplyed.append(s)
-
-        return unreplyed
+    def getGoodSubmissions(self):
+        for s in self.reddit.get_subreddit('all').get_hot(limit=100):
+            if s.id not in self.respondedTo \
+                    and s.num_comments >= self.minComments:
+                yield s
 
     def generateCloudFor(self, submission):
         self.respondedTo.add(submission.id)

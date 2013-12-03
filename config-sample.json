@@ -6,5 +6,6 @@
     "size": 400,
     "scale": 2,
     "clientId": "<your imgur client id>",
+    "minComments": 50,
     "signature": "<how you want to sign your messages, for example point to the bot master.>"
 }
