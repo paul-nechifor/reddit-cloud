@@ -23,8 +23,17 @@ class CommentParser(HTMLParser):
     def __init__(self):
         HTMLParser.__init__(self)
         self.text = ''
+    def handle_starttag(self, tag, attrs):
+        if tag == 'a':
+            self.aTags += 1
+    def handle_endtag(self, tag):
+        if tag == 'a':
+            self.aTags -= 1
     def handle_data(self, data):
-        self.text += data
+        if self.aTags > 0 and data.startswith('http'):
+            pass
+        else:
+            self.text += data
     def handle_entityref(self, name):
         self.text += htmlentitydefs.entitydefs[name]
     def handle_charref(self, name):
