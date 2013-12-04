@@ -180,6 +180,17 @@ def hot(args, config):
     client = Client(config)
     client.login()
     client.loop()
+    
+def submission(args, config):
+    client = Client(config)
+    client.login()
+    try:
+        submission = client.reddit.get_submission(submission_id=args.subId)
+        client.generateCloudFor(submission)
+    except:
+        traceback.print_exc()
+        print "Bad data or Reddit isn't working."
+        exit(1)
 
 def main():
     parser = argparse.ArgumentParser(prog=sys.argv[0])
@@ -198,6 +209,12 @@ def main():
     parser_hot = subparsers.add_parser('hot',
             help='generate word cloud for the most popular threads')
     parser_hot.set_defaults(func=hot)
+    
+    parser_submission = subparsers.add_parser('submission',
+            help='generate a word cloud for a specific submission')
+    parser_submission.add_argument('subId', type=str,
+            help='the submission id, like "1s2mkq"')
+    parser_submission.set_defaults(func=submission)
 
     config = json.loads(open('config.json').read())
     args = parser.parse_args()
