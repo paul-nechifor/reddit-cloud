@@ -65,15 +65,15 @@ there when a word cloud is generated. Open Sans is included by default.
 
 You normally start the bot by running:
 
-    python bot.py hot
+    python2 bot.py hot
 
 To post a word cloud of somebody's comments as a reply to a post do:
 
-    python bot.py user-hist <username> <full-permalink-of-the-comment>
+    python2 bot.py user-hist <username> <full-permalink-of-the-comment>
 
 To view the help run:
 
-    python bot.py -h
+    python2 bot.py -h
 
 ### Notes
 
