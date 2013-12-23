@@ -36,7 +36,7 @@ class CommentParser(HTMLParser):
         else:
             self.text += data
     def handle_entityref(self, name):
-        self.text += htmlentitydefs.entitydefs[name]
+        self.text += htmlentitydefs.entitydefs[name].decode('utf-8', 'ignore')
     def handle_charref(self, name):
         if name[0] == 'x':
             self.text += unichr(int(name[1:], 16))
@@ -120,9 +120,9 @@ class Client:
     def makeCloud(self, text, font=None):
         if font is None:
             font = random.choice(self.fonts)
-        words, counts = wordcloud.process_text(text, max_features=2000)
-        elements = wordcloud.fit_words(words, counts, width=self.size,
-                height=self.size, font_path=font)
+        words = wordcloud.process_text(text, max_features=2000)
+        elements = wordcloud.fit_words(words, width=self.size, height=self.size,
+                font_path=font)
         wordcloud.draw(elements, self.outFile, width=self.size,
                 height=self.size, scale=self.scale, font_path=font)
 
