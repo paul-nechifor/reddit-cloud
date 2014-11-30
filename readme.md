@@ -1,10 +1,11 @@
-reddit-cloud
-============
+# Reddit Cloud
 
 This is a Reddit bot which generates word clouds for comments in submissions.
 I'm running it on user [WordCloudBot2][1]. You can read a [longer
 description][2] on my blog. Skip down to the [instructions](#instructions) to
 run it by yourself.
+
+![Reddit Cloud Cover](screenshot.png)
 
 ## Frequent questions and suggestions
 
@@ -80,8 +81,12 @@ To view the help run:
 If you are using Mac OS X, you might have to install a Fortran compiler in order
 to fulfill some of the dependencies.
 
+## License
+
+MIT
+
 [1]: http://www.reddit.com/user/WordCloudBot2
-[2]: http://blog.paul.nechifor.net/post/57349950225/word-cloud-bot-for-reddit
+[2]: http://nechifor.net/blog/reddit-wordcloud-bot
 [3]: http://docs.python-guide.org/en/latest/dev/virtualenvs.html
 [4]: https://github.com/paul-nechifor/word_cloud
 [5]: https://github.com/amueller/word_cloud
