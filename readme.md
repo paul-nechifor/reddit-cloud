@@ -1,3 +1,7 @@
+# This repository has been moved to [gitlab.com/paul-nechifor/reddit-cloud](http://gitlab.com/paul-nechifor/reddit-cloud).
+
+Old readme:
+
 # Reddit Cloud
 
 This is a Reddit bot which generates word clouds for comments in submissions.
